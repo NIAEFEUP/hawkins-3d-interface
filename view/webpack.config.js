@@ -7,4 +7,10 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   mode: 'development',
+  devServer: {
+    contentBase: [
+      path.join(__dirname, 'dist'),
+      path.join(__dirname, 'assets'),
+    ]
+  }
 };
