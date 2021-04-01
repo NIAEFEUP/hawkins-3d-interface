@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
 export default class ChessBoard extends THREE.Mesh {
-    constructor() {
-        const boardGeometry = new THREE.BoxGeometry( 4, 4, 0.4);
+    constructor(size, thickness) {
+        const boardGeometry = new THREE.BoxGeometry( size, size, thickness );
 
         const boardTexture = new THREE.ImageUtils.loadTexture("/textures/board-pattern.png");
         boardTexture.repeat.set(4,4);
@@ -19,5 +19,6 @@ export default class ChessBoard extends THREE.Mesh {
             sideMaterial
         ];
         super(boardGeometry, new THREE.MeshFaceMaterial(boardMaterials));
+        this.rotateOnAxis(new THREE.Vector3(-1,0,0), Math.PI/2);
     }
 }
