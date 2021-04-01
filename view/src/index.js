@@ -1,26 +1,6 @@
 import * as THREE from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-
-function createBoard(scene) {
-    const boardTexture = new THREE.ImageUtils.loadTexture("/textures/board-pattern.png");
-    boardTexture.repeat.set(4,4);
-    boardTexture.wrapS = THREE.RepeatWrapping;
-    boardTexture.wrapT = THREE.RepeatWrapping;
-    
-    const boardMaterials = [    
-        new THREE.MeshLambertMaterial({color: 0x555555}),
-        new THREE.MeshLambertMaterial({color: 0x555555}),
-        new THREE.MeshLambertMaterial({color: 0x555555}),
-        new THREE.MeshLambertMaterial({color: 0x555555}),
-        new THREE.MeshLambertMaterial({ map: boardTexture }),
-        new THREE.MeshLambertMaterial({color: 0x555555})
-    ];
-    
-    const boardGeometry = new THREE.BoxGeometry( 4, 4, 0.4);
-    const board = new THREE.Mesh( boardGeometry, new THREE.MeshFaceMaterial(boardMaterials) );
-    board.rotateOnAxis(new THREE.Vector3(-1,0,0), Math.PI/3);
-    scene.add( board );
-}
+import ChessBoard from './objects/ChessBoard';
+import Pawn from './objects/chessPieces/Pawn';
 
 function createLights(scene) {
     var light = new THREE.AmbientLight( 0x555555 ); // soft white light
@@ -60,23 +40,15 @@ document.body.appendChild( renderer.domElement );
 camera.position.z = 5;
 
 createLights(scene);
-createBoard(scene);
 createCube(scene, renderer);
 
-const pieces = ["Pawn","Bishop", "King", "Knight", "Queen", "Rook"];
-const loader = new OBJLoader();
-let x = -3;
-pieces.forEach((piece) => {
-    loader.load(`/models/chess/${piece}.obj`, function(object) {
-        object.traverse( function ( child ) {    
-            if (child instanceof THREE.Mesh) {
-                child.material = new THREE.MeshLambertMaterial({color: 0x555555});
-                child.position.set(x, 0, 1);
-                child.scale.set(.025, .025, .025);
-                child.rotateOnAxis(new THREE.Vector3(1,0,0), Math.PI/6);
-                scene.add(child);
-            }
-        });
-        x += 1;
-    });
-});
+// chess board
+const chessBoard = new ChessBoard();
+chessBoard.rotateOnAxis(new THREE.Vector3(-1,0,0), Math.PI/3);
+scene.add(chessBoard);
+
+// pawn
+const pawn = new Pawn();
+pawn.position.set(0,0,1);
+pawn.rotateOnAxis(new THREE.Vector3(1,0,0), Math.PI/6);
+scene.add(pawn);
