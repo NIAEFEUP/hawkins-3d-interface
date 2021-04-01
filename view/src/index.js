@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 function createBoard(scene) {
     const boardTexture = new THREE.ImageUtils.loadTexture("/textures/board-pattern.png");
@@ -61,3 +62,21 @@ camera.position.z = 5;
 createLights(scene);
 createBoard(scene);
 createCube(scene, renderer);
+
+const pieces = ["Pawn","Bishop", "King", "Knight", "Queen", "Rook"];
+const loader = new OBJLoader();
+let x = -3;
+pieces.forEach((piece) => {
+    loader.load(`/models/chess/${piece}.obj`, function(object) {
+        object.traverse( function ( child ) {    
+            if (child instanceof THREE.Mesh) {
+                child.material = new THREE.MeshLambertMaterial({color: 0x555555});
+                child.position.set(x, 0, 1);
+                child.scale.set(.025, .025, .025);
+                child.rotateOnAxis(new THREE.Vector3(1,0,0), Math.PI/6);
+                scene.add(child);
+            }
+        });
+        x += 1;
+    });
+});
