@@ -1,1 +1,2 @@
-# hawkins-3d-interface
+# Hawkins - 3d Interface
+This website serves as a user interface for Hawkins, an open-source chess engine built with Python. For more detailed information on how this project connects with the engine consult our [wiki](https://github.com/NIAEFEUP/hawkins-3d-interface/wiki/Endpoints) section.
